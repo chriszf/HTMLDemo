@@ -12,6 +12,15 @@
         div#container-3d {
             -webkit-transition: -webkit-transform ease 0.5s;
             width: 700px;
+            background-color: #ccc;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 25px;
+        }
+
+        body.styled div#container-3d {
+            -webkit-transition: -webkit-transform ease 0.5s;
+            width: 700px;
             background-color: #666;
             margin-left: auto;
             margin-right: auto;
@@ -19,7 +28,7 @@
         }
 
         body.styled div#container-3d.on {
-            -webkit-transform: translateY(200px) rotateX(60deg) rotateZ(-50deg);
+            -webkit-transform: rotateX(60deg) rotateZ(-50deg);
         }
 
         body.styled div#container-3d:hover {
@@ -74,32 +83,53 @@
             z-index: 50;
         }
 
+        .zl6.on {
+            -webkit-transform: translateZ(75px);
+            z-index: 60;
+        }
 
     </style>
     <body>
         <div id="container-3d" class="zl0 mover">
             <div id="head" class="zl1 mover">
-                <h1 class="mover">My Web Diary</h1>
+                <h1 class="mover">Mr. Flufferkins' Web Diary</h1>
+                <img src="http://lorempixel.com/600/150/cats">
             </div>
             <div id="main" class="zl1 mover">
-                <h2 class="zl2 mover">Test</h2>
-                <div class="newsbit zl2 mover">
-                    <h3 class="zl3 mover">More tests</h3>
-                    <div class="zl3 mover">
-                        Random text.
+                <h2 class="zl2 mover">This page is all about Mr. Flufferkins and his adventures</h2>
+                <div class="zl2 mover">
+                    <div class="newsbit zl3 mover">
+                        <div class="zl4 mover">
+                            <h3 class="zl5 mover">A gross bird</h3>
+                            <div class="zl5 mover">
+                                <p>
+                                Today, my cat Mr. Flufferkins came to me carrying a super gross bird. At first, I was horrified, but then I realized that this is just Mr. Flufferkins' parental instinct kicking in. Realizing I'm completely incapable of hunting for myself, he thoughtfully fetched for me a little sparrow so that I wouldn't go hungry.
+                                </p>
+                                <p>
+                                I think this just goes to prove exactly how intelligent cats are, and I for one cannot wait to see what my little fluffy-wuffy will bring next. He really <em>cares</em>.
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="newsbit zl2 mover">
-                    <h3 class="zl3 mover">More tests</h3>
-                    <div class="zl3 mover">
-                        Random text.  And yet more random text.
+                    <div class="newsbit zl3 mover">
+                        <div class="zl4 mover">
+                            <h3 class="zl5 mover">A cat is really a lot like a baby when you think about it</h3>
+                            <div class="zl5 mover">
+                                <p>
+                                For one, they drink milk. And they both kind of make unintelligible noises. On the other hand, they're super independent. They're also fierce, and they like to kill things. I know a few babies I might describe as fierce, but very few that like to kill. My neighbor's baby liked to kill, she was really creepy.
+                                </p>
+                                <p>
+                                Okay, so except for the killing, and leaving you alone for days on end, and generally being emotionally distant, cats are very much like babies, and I love my Mr. Flufferkins like my own child.
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </body>
     <script>
-    var MAXLEVEL = 4;
+    var MAXLEVEL = 6;
     var level = -1;
     var PERSPECTIVE = false;
     function advance() {
@@ -140,7 +170,7 @@
     };
 
     function circle_event(gesture) {
-        if (!PERSPECTIVE && gesture.duration > 500000) {
+        if (!PERSPECTIVE && gesture.duration > 1500000) {
             PERSPECTIVE = true;
             var now = new Date().getTime();
             LAST_SWIPE = now;
