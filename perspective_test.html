@@ -34,6 +34,10 @@
         body.styled div#container-3d:hover {
         }
 
+        div#main {
+            position: relative;
+        }
+
         body.styled div#head, body.styled div#main {
             background-color: #999;
             width: 600px;
@@ -88,6 +92,18 @@
             z-index: 60;
         }
 
+        div.sidebar {
+            width: 170px;
+            background-color: #eee;
+            position: absolute;
+            left: 500px;
+            padding: 15px;
+        }
+
+        div.mainbar {
+            width: 475px;
+        }
+
     </style>
     <body>
         <div id="container-3d" class="zl0 mover">
@@ -97,7 +113,17 @@
             </div>
             <div id="main" class="zl1 mover">
                 <h2 class="zl2 mover">This page is all about Mr. Flufferkins and his adventures</h2>
-                <div class="zl2 mover">
+                <div class="sidebar zl2 mover">
+                    <h3>Cat facts!</h3>
+                    <div class="zl3 mover">
+                    Did you know?
+                    <ul>
+                        <li>Cats are the only mammals born from eggs. Previously, this honor went to the platypi, but the cat council has since decided otherwise.</li>
+                        <li>At least two former United States presidents were actually cats</li>
+                    </ul>
+                    </div>
+                </div>
+                <div class="zl2 mover mainbar">
                     <div class="newsbit zl3 mover">
                         <div class="zl4 mover">
                             <h3 class="zl5 mover">A gross bird</h3>
@@ -132,6 +158,7 @@
     var MAXLEVEL = 6;
     var level = -1;
     var PERSPECTIVE = false;
+    var STYLED = false;
     function advance() {
         if (!PERSPECTIVE) {
             return;
@@ -156,9 +183,8 @@
 
     // Event can only happen once per.. something.
     function swipe_event(gesture) {
-//        console.log(gesture);
         var now = new Date().getTime();
-        if (gesture.duration > 50000 && now-LAST_SWIPE > 1000) {
+        if (gesture.duration > 30000 && now-LAST_SWIPE > 1000) {
             LAST_SWIPE = now;
             if (gesture.direction[0] < 0) {
                 rewind();
@@ -170,12 +196,19 @@
     };
 
     function circle_event(gesture) {
-        if (!PERSPECTIVE && gesture.duration > 1500000) {
-            PERSPECTIVE = true;
-            var now = new Date().getTime();
+        var now = new Date().getTime();
+        console.log("gesture");
+        if (gesture.duration > 500000 && now-LAST_SWIPE > 1000) {
             LAST_SWIPE = now;
-            $("body").addClass("styled");
-            advance();
+
+            if (!STYLED) {
+                $("body").addClass("styled");
+                STYLED = true;
+            }
+            else if (!PERSPECTIVE) {
+                PERSPECTIVE = true;
+                advance();
+            }
         }
     };
 
@@ -184,6 +217,7 @@
             if (frame.gestures.length > 0) {
                 for (var i = 0; i < frame.gestures.length; i++) {
                     gesture = frame.gestures[i];
+                    console.log(gesture);
 
                     if (gesture.type == "swipe") {
                         swipe_event(gesture);
@@ -191,9 +225,6 @@
                     else if (gesture.type == "circle") {
                         circle_event(gesture);
                     }
-
-
-
                 }
             }
         }
