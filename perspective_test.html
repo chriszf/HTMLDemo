@@ -1,0 +1,173 @@
+<html>
+    <script src="http://js.leapmotion.com/0.2.0-beta1/leap.min.js"></script> 
+    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <style>
+        body {
+            font-family: verdana, arial, sans-serif;
+            background-color: #333;
+            -webkit-perspective: 3000;
+            -webkit-transition: -webkit-transform ease 0.5s;
+        }
+
+        div#container-3d {
+            -webkit-transition: -webkit-transform ease 0.5s;
+            width: 700px;
+            background-color: #666;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 25px;
+        }
+
+        body.styled div#container-3d.on {
+            -webkit-transform: translateY(200px) rotateX(60deg) rotateZ(-50deg);
+        }
+
+        body.styled div#container-3d:hover {
+        }
+
+        body.styled div#head, body.styled div#main {
+            background-color: #999;
+            width: 600px;
+            padding: 15px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        body.styled div#head {
+            margin-bottom: 15px;
+        }
+
+        body.styled div#main {
+        }
+
+        body.styled div.newsbit {
+            background-color: #ccc;
+        }
+
+        body.styled .mover {
+            -webkit-transform-style: preserve-3d;
+            -webkit-transition: -webkit-transform ease 0.5s;
+        }
+
+        .zl1.on {
+            -webkit-transform: translateZ(75px);
+            z-index: 10;
+        }
+
+        .zl2.on {
+            -webkit-transform: translateZ(75px);
+            z-index: 20;
+        }
+
+        .zl3.on {
+            -webkit-transform: translateZ(75px);
+            z-index: 30;
+        }
+
+        .zl4.on {
+            -webkit-transform: translateZ(75px);
+            z-index: 40;
+        }
+
+        .zl5.on {
+            -webkit-transform: translateZ(75px);
+            z-index: 50;
+        }
+
+
+    </style>
+    <body>
+        <div id="container-3d" class="zl0 mover">
+            <div id="head" class="zl1 mover">
+                <h1 class="mover">My Web Diary</h1>
+            </div>
+            <div id="main" class="zl1 mover">
+                <h2 class="zl2 mover">Test</h2>
+                <div class="newsbit zl2 mover">
+                    <h3 class="zl3 mover">More tests</h3>
+                    <div class="zl3 mover">
+                        Random text.
+                    </div>
+                </div>
+                <div class="newsbit zl2 mover">
+                    <h3 class="zl3 mover">More tests</h3>
+                    <div class="zl3 mover">
+                        Random text.  And yet more random text.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>
+    var MAXLEVEL = 4;
+    var level = -1;
+    var PERSPECTIVE = false;
+    function advance() {
+        if (!PERSPECTIVE) {
+            return;
+        }
+        if (level < MAXLEVEL) {
+            level++;
+            $(".zl"+level).addClass("on");
+        }
+    };
+
+    function rewind() {
+        if (!PERSPECTIVE) {
+            return;
+        }
+        $(".zl"+level).removeClass("on");
+        if (level > -1) {
+            level--;
+        }
+    };
+
+    LAST_SWIPE = new Date().getTime();
+
+    // Event can only happen once per.. something.
+    function swipe_event(gesture) {
+//        console.log(gesture);
+        var now = new Date().getTime();
+        if (gesture.duration > 50000 && now-LAST_SWIPE > 1000) {
+            LAST_SWIPE = now;
+            if (gesture.direction[0] < 0) {
+                rewind();
+            }
+            else {
+                advance();
+            }
+        }
+    };
+
+    function circle_event(gesture) {
+        if (!PERSPECTIVE && gesture.duration > 500000) {
+            PERSPECTIVE = true;
+            var now = new Date().getTime();
+            LAST_SWIPE = now;
+            $("body").addClass("styled");
+            advance();
+        }
+    };
+
+    Leap.loop({enableGestures: true},
+        function(frame) { 
+            if (frame.gestures.length > 0) {
+                for (var i = 0; i < frame.gestures.length; i++) {
+                    gesture = frame.gestures[i];
+
+                    if (gesture.type == "swipe") {
+                        swipe_event(gesture);
+                    }
+                    else if (gesture.type == "circle") {
+                        circle_event(gesture);
+                    }
+
+
+
+                }
+            }
+        }
+    );
+
+    </script>
+</html>
